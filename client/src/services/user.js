@@ -10,16 +10,18 @@ export const registerUser = async (userData) => {
     body: JSON.stringify(userData),
   });
 
-  if (res.status !== 200) {
+  // Allow any 2xx status
+  if (!res.ok) { // res.ok is true for 200–299
     return {
       hasError: true,
-      message: 'A problem occured during registration. Please try again.',
+      message: 'A problem occurred during registration. Please try again.',
     };
   }
 
   const { user, token } = await res.json();
   return { hasError: false, user, token };
 };
+
 
 export const getUserDataById = async (userId, token) => {
   const res = await fetch(`${END_POINT}/${userId}`, {

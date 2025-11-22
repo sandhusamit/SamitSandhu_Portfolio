@@ -67,17 +67,16 @@ export function AuthProvider({ children }) {
   const registerUser = async (userData) => {
     try {
       const data = await registerUserService(userData);
-      if (data && data.hasError) navigate('/error', { state: { message: data } });
-      if (!isAdmin)
-      {
-        if (data && !data.hasError) navigate('/login');
-      }
+      console.log("AuthContext: registerUser data:", data);
+      if (!data || data.hasError) navigate('/error', { state: { message: data } });
+      return data;
     } catch (error) {
       navigate('/error', {
         state: 'A serious error occurred while registering.\nPlease try again.',
       });
     }
   };
+
 
   const loginUser = async (userData) => {
     try {

@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Register() {
+
+  const { registerUser } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -28,33 +31,34 @@ This function needs to be contained inside authcontext, as well as others. All a
 
 
 const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      console.log("Submitting form data:", formData);
-      const response = await registerUser(formData);
-
-      if (response.ok) {
-        const data = await response.json();
-
-        alert("Register successful!");
-
-        setFormData({
-          firstName: "",
-          lastName: "",
-          username: "",
-          email: "",
-          password: ""
-        });
-
-        window.location.href = "/";
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
-    } catch (err) {
-      alert("Server error. Please try again later.");
+  try {
+    console.log("Submitting form data:", formData);
+    const response = await registerUser(formData); // already returns { hasError, user, token }
+    console.log("Registration response:", response);
+    if (response.hasError) {
+      alert(response.message || "Something went wrong. Please try again.");
+      return;
     }
-  };
+
+    alert("Register successful!");
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: ""
+    });
+
+    window.location.href = "/";
+
+  } catch (err) {
+    alert("Server error from front end. Please try again later.");
+  }
+};
+
 
   return (
 <section className="register-container">
