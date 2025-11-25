@@ -11,6 +11,7 @@ export default function ManageUsers() {
   } = useAuth();
 
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -39,7 +40,7 @@ export default function ManageUsers() {
     e.preventDefault();
 
     if (editingId) {
-      await adminUpdateUser(editingId, formData);
+      await adminUpdateUser(editingId, user, formData);
       setEditingId(null);
     } else {
       await registerUser(formData);
@@ -63,10 +64,11 @@ export default function ManageUsers() {
       lastName: user.lastName,
       username: user.username,
       email: user.email,
-      password: "", // don't prefill passwords
+      password: user.password, // don't prefill passwords - unless you'd like to obtain hashed pass and convert back
       role: user.role,
     });
     setEditingId(user._id);
+    setUser(user);
   };
 
   const handleDelete = async (id) => {
@@ -128,6 +130,20 @@ export default function ManageUsers() {
         <button type="submit" className="halo-btn-primary">
           {editingId ? "Update User" : "Create User"}
         </button>
+        <button type="button" onClick={() => {
+          setEditingId(null);
+          setFormData({
+            firstName: "",
+            lastName: "",
+            username: "",
+            email: "",
+            password: "",
+            role: "user",
+          });
+        }} className="halo-btn-secondary">
+          Clear Form
+        </button>
+
       </form>
 
       <div className="manage-users-list">

@@ -346,6 +346,7 @@ export const createUser = async (req, res) => {
 // UPDATE an existing user by ID
 export const updateUserById = async (req, res) => {
     try {
+
         const user = await userModel.findByIdAndUpdate(req.params.id, req.body, { new: true });   
         if(!user)
         {

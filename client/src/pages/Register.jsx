@@ -52,7 +52,7 @@ const handleSubmit = async (e) => {
       password: ""
     });
 
-    window.location.href = "/";
+    window.location.href = "/login"; // Redirect to login page after successful registration
 
   } catch (err) {
     alert("Server error from front end. Please try again later.");

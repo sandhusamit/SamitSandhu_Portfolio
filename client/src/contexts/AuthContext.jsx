@@ -24,6 +24,10 @@ import { createMessage as createMessageService
 , fetchMessages as fetchMessagesService
 
  } from '../services/message.js';
+
+import bcrypt from 'bcryptjs';
+
+
 const AuthContext = createContext();
 
 // Checks local storage for user and auth data every time the app loads.
@@ -106,6 +110,7 @@ export function AuthProvider({ children }) {
     setAuthUserId('');
     setJwtToken('');
     setIsLoggedIn(false);
+    setIsAdmin(false);
     navigate('/');
   };
 
@@ -217,8 +222,12 @@ const adminDeleteUser = async (userId) => {
   }
 };
 
-const adminUpdateUser = async (userId, userData) => {
+const adminUpdateUser = async (userId, user, userData) => {
   try {
+    // const salt = await bcrypt.hash(userData.password, 10);
+    userData.password = await bcrypt.hash(userData.password, 10);
+    console.log("adminUpdateUser userData:", userData);
+
     const res = await fetch(`/api/users/${userId}`, {
       method: "PUT",
       headers: {
