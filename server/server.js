@@ -2,6 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // dotenv.config({ path: path.resolve('../.env') }); -- this was giving issues when running server from root directory
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -32,6 +36,16 @@ connection.on("error", (error) => { console.error("MongoDB connection error:", e
 //Back end routes
 app.use("/src", assetsRouter);
 app.use("/", router);
+app.use(express.static(path.join(__dirname, '../client/dist'))); 
+
+
+// catch-all for frontend routes, excluding API paths
+app.get(/^(?!\/api).*$/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+  });
+  
+
+// Start the server
 app.listen(3000);
 console.log("Server running at http://localhost:3000/");
 //module.exports = app;

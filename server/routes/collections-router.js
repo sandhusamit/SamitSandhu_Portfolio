@@ -53,7 +53,7 @@ router.get("/api/about/:id", getAboutDataById); // Example route for about page
 router.post("/api/about", createAboutPageData); // Example route for about page
 
 // Routes for Welcome Message and Contacts collections
-router.get("/", getWelcomeMsg); // Example route for welcome message
+// router.get("/", getWelcomeMsg); // Example route for welcome message
 router.get("/api/contacts", getAllContacts); // Example route for contacts
 router.post("/api/contacts", createContact); // Example route to create a contact
 router.get('/api/contacts/:id', getContactById); // Example route to get contact by ID

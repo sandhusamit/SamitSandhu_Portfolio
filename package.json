@@ -15,7 +15,7 @@
     "start:server": "nodemon server/server.js",
     "start:client": "npm --prefix client run dev",
     "dev": "npm-run-all --parallel start:server start:client",
-    "build:client": "vite build --cwd client",
+    "build": "npm --prefix client run  ",
     "preview:client": "vite preview --cwd client",
     "start:localserver": "cross-env NODE_ENV=local_dev nodemon server/server.js",
     "dev:local": "npm-run-all --parallel start:localserver start:client"
